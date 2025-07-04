@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drinks • Seu bar pessoal</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts - Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    
+    <!-- Custom CSS -->
+    <link href="style.css" rel="stylesheet">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#667eea">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Drinks">
+    
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'sans': ['Inter', 'ui-sans-serif', 'system-ui'],
+                    },
+                    colors: {
+                        'primary': {
+                            50: '#f0f4ff',
+                            100: '#e0eaff',
+                            500: '#667eea',
+                            600: '#5a6fd8',
+                            700: '#4c59c4',
+                            800: '#3e46a1',
+                            900: '#2d3282',
+                        },
+                        'accent': {
+                            500: '#FF6B6B',
+                            600: '#EE5555',
+                        }
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'slide-up': 'slideUp 0.3s ease-out',
+                        'bounce-soft': 'bounceSoft 0.6s ease-in-out',
+                        'pulse-soft': 'pulseSoft 2s ease-in-out infinite',
+                    },
+                    backdropBlur: {
+                        'xs': '2px',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-sans bg-gradient-to-br from-slate-50 via-white to-slate-100 min-h-screen">
+    
+    <!-- Header com Gradiente Moderno -->
+    <header class="sticky top-0 z-50 bg-gradient-to-r from-primary-500 via-primary-600 to-purple-600 backdrop-blur-md shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16 sm:h-20">
+                
+                <!-- Logo -->
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 sm:w-10 sm:h-10 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
+                        <i data-lucide="martini" class="w-5 h-5 sm:w-6 sm:h-6 text-white"></i>
+                    </div>
+                    <div class="text-white">
+                        <h1 class="text-xl sm:text-2xl font-bold">Drinks</h1>
+                        <p class="text-xs sm:text-sm text-white/80 hidden sm:block">Seu bar pessoal</p>
+                    </div>
+                </div>
+                
+
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+        
+        <!-- Search Section -->
+        <div class="mb-8">
+            <div class="relative group">
+                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <i data-lucide="search" class="w-5 h-5 text-gray-400 group-focus-within:text-primary-500 transition-colors duration-200"></i>
+                </div>
+                <input 
+                    type="text" 
+                    id="searchInput" 
+                    placeholder="Buscar seu drink favorito..." 
+                    class="w-full pl-12 pr-4 py-4 bg-white/80 backdrop-blur-sm border border-gray-200 rounded-2xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 shadow-lg hover:shadow-xl"
+                >
+            </div>
+        </div>
+
+        <!-- Compact Filters -->
+        <div class="mb-6">
+            <!-- Filter Status & Controls -->
+            <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center gap-2">
+                    <span class="text-sm font-medium text-gray-700">Filtros</span>
+                    <span id="filterCount" class="hidden px-2 py-1 text-xs font-medium bg-primary-100 text-primary-800 rounded-full">0 ativos</span>
+                </div>
+                <button id="clearFilters" class="hidden text-sm text-primary-600 hover:text-primary-700 transition-colors">
+                    Limpar Filtros
+                </button>
+            </div>
+
+            <!-- Compact Filter Row -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                <!-- Category Filter -->
+                <div class="relative">
+                    <button id="categoryDropdown" class="w-full flex items-center justify-between px-4 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
+                        <span class="flex items-center gap-2">
+                            <i data-lucide="tag" class="w-4 h-4"></i>
+                            <span id="categoryText">Categoria</span>
+                        </span>
+                        <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                    </button>
+                    <div id="categoryMenu" class="hidden absolute top-full left-0 right-0 mt-1 bg-white border border-gray-300 rounded-lg shadow-lg z-10 max-h-64 overflow-y-auto">
+                        <div class="p-1">
+                            <button class="filter-option active" data-category="all">Todos</button>
+                            <button class="filter-option" data-category="favoritos">Favoritos</button>
+                            <button class="filter-option" data-category="Gin">Gin</button>
+                            <button class="filter-option" data-category="Whiskey">Whiskey</button>
+                            <button class="filter-option" data-category="Cachaça">Cachaça</button>
+                            <button class="filter-option" data-category="Rum">Rum</button>
+                            <button class="filter-option" data-category="Tequila">Tequila</button>
+                            <button class="filter-option" data-category="Aperitivos">Aperitivos</button>
+                            <button class="filter-option" data-category="Saquê">Saquê</button>
+                            <button class="filter-option" data-category="Especiais">Especiais</button>
+                            <button class="filter-option" data-category="Sem Álcool">Sem Álcool</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Glass Filter -->
+                <div class="relative">
+                    <button id="glassDropdown" class="w-full flex items-center justify-between px-4 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
+                        <span class="flex items-center gap-2">
+                            <i data-lucide="wine" class="w-4 h-4"></i>
+                            <span id="glassText">Copo</span>
+                        </span>
+                        <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                    </button>
+                    <div id="glassMenu" class="hidden absolute top-full left-0 right-0 mt-1 bg-white border border-gray-300 rounded-lg shadow-lg z-10 max-h-64 overflow-y-auto">
+                        <div class="p-1">
+                            <button class="filter-option active" data-glass="all">Todos</button>
+                            <button class="filter-option" data-glass="Old Fashioned">Old Fashioned</button>
+                            <button class="filter-option" data-glass="Highball">Highball</button>
+                            <button class="filter-option" data-glass="Taça de vinho">Taça de Vinho</button>
+                            <button class="filter-option" data-glass="Taça de martini">Taça de Martini</button>
+                            <button class="filter-option" data-glass="Taça de suco">Taça de Suco</button>
+                            <button class="filter-option" data-glass="Barriquinha">Barriquinha</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Technique Filter -->
+                <div class="relative">
+                    <button id="techniqueDropdown" class="w-full flex items-center justify-between px-4 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
+                        <span class="flex items-center gap-2">
+                            <i data-lucide="zap" class="w-4 h-4"></i>
+                            <span id="techniqueText">Técnica</span>
+                        </span>
+                        <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                    </button>
+                    <div id="techniqueMenu" class="hidden absolute top-full left-0 right-0 mt-1 bg-white border border-gray-300 rounded-lg shadow-lg z-10 max-h-64 overflow-y-auto">
+                        <div class="p-1">
+                            <button class="filter-option active" data-technique="all">Todas</button>
+                            <button class="filter-option" data-technique="Balançado">Balançado</button>
+                            <button class="filter-option" data-technique="Mexido">Mexido</button>
+                            <button class="filter-option" data-technique="Mexido no copo">Mexido no Copo</button>
+                            <button class="filter-option" data-technique="Montado no copo">Montado no Copo</button>
+                            <button class="filter-option" data-technique="Macerado no copo">Macerado no Copo</button>
+                            <button class="filter-option" data-technique="Batido no liquidificador">Batido</button>
+                            <button class="filter-option" data-technique="Fervido">Fervido</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading State -->
+        <div id="loadingState" class="hidden">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <div class="skeleton-card" v-for="i in 8"></div>
+            </div>
+        </div>
+
+        <!-- Drinks Grid -->
+        <div id="drinksContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <!-- Cards serão inseridos aqui via JavaScript -->
+        </div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="hidden text-center py-16">
+            <div class="w-24 h-24 mx-auto mb-6 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center">
+                <i data-lucide="search-x" class="w-12 h-12 text-gray-400"></i>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 mb-2">Nenhum drink encontrado</h3>
+            <p class="text-gray-600 max-w-md mx-auto">Tente ajustar sua busca ou explore outras categorias para encontrar o drink perfeito.</p>
+        </div>
+    </main>
+
+    <!-- Modern Modal -->
+    <div id="drinkModal" class="fixed inset-0 z-50 hidden">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
+        
+        <!-- Modal Content -->
+        <div class="relative h-full flex items-end sm:items-center justify-center p-4">
+            <div class="w-full max-w-2xl bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl transform transition-all duration-300 max-h-[90vh] overflow-hidden">
+                
+                <!-- Modal Header -->
+                <div class="sticky top-0 bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between">
+                    <h2 id="modalTitle" class="text-xl font-bold text-gray-900"></h2>
+                    <button id="closeModal" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors duration-200">
+                        <i data-lucide="x" class="w-5 h-5 text-gray-600"></i>
+                    </button>
+                </div>
+                
+                <!-- Modal Body -->
+                <div id="modalBody" class="px-4 py-3 overflow-y-auto max-h-[calc(90vh-80px)]">
+                    <!-- Conteúdo será inserido via JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Action Button -->
+    <button id="fabButton" class="fixed bottom-6 right-6 w-14 h-14 bg-gradient-to-r from-primary-500 to-purple-600 hover:from-primary-600 hover:to-purple-700 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center active:scale-95 z-40">
+        <i data-lucide="heart" class="w-6 h-6"></i>
+    </button>
+
+    <!-- Scripts -->
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+    </script>
+    <script src="drinks-data.js"></script>
+    <script src="script.js"></script>
+</body>
+</html> 
